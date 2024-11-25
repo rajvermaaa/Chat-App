@@ -34,12 +34,14 @@ app.use("/api/messages", messageRoutes);
 const server = app.listen(process.env.PORT, () =>
   console.log(`Server started on ${process.env.PORT}`)
 );
+
 const io = socket(server, {
   cors: {
-    origin: "http://localhost:3000",
+    origin: process.env.VITE_BACKEND_BASE_URL || "http://localhost:3000", // Fallback to localhost if env is undefined
     credentials: true,
   },
 });
+
 
 global.onlineUsers = new Map();
 io.on("connection", (socket) => {
